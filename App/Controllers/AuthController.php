@@ -1,0 +1,105 @@
+<?php
+
+namespace App\Controllers;
+
+use App\Models\User;
+use Exception;
+
+class AuthController
+{
+    public function showRegisterForm()
+    {
+        require_once '../app/Views/auth/Register.php';
+    }
+
+    public function register()
+    {
+        try {
+            session_start(); 
+            
+            $name = $_POST['name'] ?? null;
+            $email = $_POST['email'] ?? null;
+            $password = $_POST['password'] ?? null;
+    
+            if (!$name || !$email || !$password) {
+                throw new Exception("Todos los campos son obligatorios.");
+            }
+    
+            
+            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+    
+            
+            $user = new User();
+            $user->create($name, $email, $hashedPassword);
+    
+            
+            $foundUser = $user->findByEmail($email); 
+            if (!$foundUser) {
+                throw new Exception("Error al encontrar el usuario después de crear.");
+            }
+                
+            $_SESSION['user_id'] = $foundUser['id'];
+            $_SESSION['user_name'] = $foundUser['name'];
+    
+    
+            header("Location: /CRUD%20Alojamientos/public/dashboard");
+            exit();
+    
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+    
+    
+
+    public function showLoginForm()
+    {
+        require_once '../app/Views/auth/Login.php';
+    }
+
+    public function login()
+    {
+        try {
+            error_log("Método login iniciado");
+            
+            $email = $_POST['email'] ?? null;
+            $password = $_POST['password'] ?? null;
+    
+            error_log("Email recibido: " . $email); // Debug
+    
+            if (!$email || !$password) {
+                throw new Exception("Todos los campos son obligatorios.");
+            }
+    
+            $user = new User();
+            $foundUser = $user->findByEmail($email);
+            
+            error_log("Usuario encontrado: " . print_r($foundUser, true));
+    
+            if (!$foundUser || !password_verify($password, $foundUser['password'])) {
+                throw new Exception("Credenciales incorrectas.");
+            }
+    
+            $_SESSION['user_id'] = $foundUser['id'];
+            $_SESSION['user_name'] = $foundUser['name'];
+            
+            error_log("Sesión iniciada para usuario ID: " . $_SESSION['user_id']);
+            
+            header("Location: /CRUD%20Alojamientos/public/dashboard");
+            exit();
+    
+        } catch (Exception $e) {
+            error_log("Error en login: " . $e->getMessage());
+            echo "Error: " . $e->getMessage();
+        }
+    }
+    
+    public function logout()
+    {
+        session_start();
+        session_destroy();
+        echo "Sesión cerrada.";
+        header("Location: /CRUD%20Alojamientos/public/login");
+        exit();
+    }
+}
