@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * User model
+ */
 namespace App\Models;
 
 use Config\Database;
@@ -14,7 +16,7 @@ class User
         $this->conn = Database::getConnection();
     }
 
-    public function create($name, $email, $password, $role = 'user')
+    public function create($name, $email, $password, $role = 'user')# crear usuario
     {
         $query = "INSERT INTO users (name, email, password, role) VALUES (:name, :email, :password, :role)";
         $stmt = $this->conn->prepare($query);
@@ -26,7 +28,7 @@ class User
         ]);
     }
 
-    public function findByEmail($email)
+    public function findByEmail($email) #buscar por email
     {
         $query = "SELECT * FROM users WHERE email = :email";
         $stmt = $this->conn->prepare($query);
@@ -34,7 +36,7 @@ class User
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function findById($id)
+    public function findById($id) #buscar por id
     {
         $query = "SELECT * FROM users WHERE id = :id";
         $stmt = $this->conn->prepare($query);
@@ -42,7 +44,7 @@ class User
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function isAdmin($userId)
+    public function isAdmin($userId) #chequear si es admin
     {
         $query = "SELECT role FROM users WHERE id = :id";
         $stmt = $this->conn->prepare($query);
@@ -51,16 +53,16 @@ class User
         return $user['role'] === 'admin';
     }
 
-    public function hasbooked($id)
-    {
-        $query = "
-            SELECT b.id AS booking_id, a.name AS accommodation_name 
-            FROM bookings b
-            JOIN accommodations a ON b.accommodation_id = a.id
-            WHERE b.user_id = :id
-        ";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([':id' => $id]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+    // public function hasbooked($id)
+    // {
+    //     $query = "
+    //         SELECT b.id AS booking_id, a.name AS accommodation_name 
+    //         FROM bookings b
+    //         JOIN accommodations a ON b.accommodation_id = a.id
+    //         WHERE b.user_id = :id
+    //     ";
+    //     $stmt = $this->conn->prepare($query);
+    //     $stmt->execute([':id' => $id]);
+    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // }
 }

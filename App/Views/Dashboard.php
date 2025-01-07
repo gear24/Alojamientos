@@ -1,3 +1,9 @@
+<?
+/*
+ Vista de dashboard
+*/
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -10,8 +16,7 @@
     <?php if (isset($user)): ?>
         <h2>Bienvenido, <?php echo htmlspecialchars($user['name']) . " " . htmlspecialchars($user['role']); ?>!</h2>
         <?php
-        $userId = $user['id'];
-        $bookings = $this->hasbooked($userId);
+        $userId = $user['id'];        
         $accommodations = $this->getAccommodations();
         ?>
 

@@ -1,23 +1,26 @@
 <?php
+/**
+ * Controlador de autenticación
+ */
+
 namespace App\Controllers;
 
 use App\Models\User;
-use App\Models\Dashboard;
 use Exception;
 
 class AuthController
 {
-    private $user; // Propiedad para almacenar la instancia de User
+    private $user; # Instancia de User
 
     public function __construct() {
-        $this->user = new User(); // Inicializa la instancia de User
+        $this->user = new User(); # Instancia de User desde el constructor
     }
 
-    public function showRegisterForm() {
+    public function showRegisterForm() { # Método para mostrar el formulario de registro
         require_once '../app/Views/auth/Register.php';
     }
 
-    public function register() {
+    public function register() { # Método para registrar un usuario
         try {
             session_start(); 
             
@@ -31,7 +34,7 @@ class AuthController
     
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
     
-            // Usa la instancia de User desde el constructor
+            #Usa la instancia de User desde el constructor
             $this->user->create($name, $email, $hashedPassword);
     
             $foundUser = $this->user->findByEmail($email); 
@@ -50,11 +53,11 @@ class AuthController
         }
     }
 
-    public function showLoginForm() {
+    public function showLoginForm() { # Método para mostrar el formulario de inicio de sesión
         require_once '../app/Views/auth/Login.php';
     }
 
-    public function login() {
+    public function login() { # Método para iniciar sesión
         try {
             error_log("Método login iniciado");
             
@@ -67,7 +70,7 @@ class AuthController
                 throw new Exception("Todos los campos son obligatorios.");
             }
     
-            // Usa la instancia de User desde el constructor
+            #Usa la instancia de User desde el constructor
             $foundUser = $this->user->findByEmail($email);
             
             error_log("Usuario encontrado: " . print_r($foundUser, true));
@@ -90,7 +93,7 @@ class AuthController
         }
     }
 
-    public function logout() {
+    public function logout() {# Método para cerrar sesión
         session_start();
         session_destroy();
         echo "Sesión cerrada.";

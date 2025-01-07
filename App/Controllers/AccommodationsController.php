@@ -1,25 +1,29 @@
 <?php
 
+/**
+ * Controlador de alojamientos
+ * 
+ */
+
 namespace App\Controllers;
 
 use App\Models\Accommodations;
-use App\Models\User; // Si necesitas User en algún momento
 use Exception;
 
 class AccommodationsController
 {
-    private $accommodation; // Propiedad para almacenar la instancia de Accommodations
+    private $accommodation; #instanciamo la clase Accommodations
 
     public function __construct() {
-        $this->accommodation = new Accommodations(); // Inicializa la instancia de Accommodations
+        $this->accommodation = new Accommodations(); #inicializamos la instancia de Accommodations
     }
 
-    public function showAccommodationForm()
+    public function showAccommodationForm()#metodo para mostrar el formulario de alojamiento
     {
         require_once '../app/Views/addAccommodation.php';
     }
 
-    public function addAccommodation()
+    public function addAccommodation()#metodo para agregar alojamiento
     {
         try {
             $name = $_POST['name'] ?? null;
@@ -43,7 +47,7 @@ class AccommodationsController
         }
     }
 
-    public function changeStatus()
+    public function changeStatus()#metodo para cambiar el estado del alojamiento
     {
         try {
             session_start(); 

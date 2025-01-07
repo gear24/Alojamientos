@@ -1,4 +1,15 @@
+<?
+/**
+ * Formulario para agregar un alojamiento
+ * @category Views
+ * @package  App_Views_AddAccommodation
+ */
+
+
+?>
+
 <form action="/CRUD%20Alojamientos/public/addAccommodation" method="POST">
+
     <h2>Agregar Alojamiento</h2>
     
     <label for="name">Nombre:</label>

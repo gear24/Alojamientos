@@ -1,4 +1,8 @@
 <?php
+/*
+    Esto es algo como el routing, creo, o eso parece, se lo copie a Jairo jaja
+ */
+
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
 

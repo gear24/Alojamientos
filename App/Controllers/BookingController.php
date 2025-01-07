@@ -1,31 +1,37 @@
 <?php
+
+/**
+ * BookingController
+ * 
+ * Controlador para manejar las reservas de alojamientos.
+ */
 namespace App\Controllers;
 
 use App\Models\Accommodations;
 use App\Models\Booking;
 
 class BookingController {
-    private $booking;
-    private $accommodations;
+    private $booking; # Instancia de Booking
+    private $accommodations; # Instancia de Accommodations
 
     public function __construct() {
-        // Inicializa el modelo de Booking
+        #Inicializa el modelo de Booking
         $this->booking = new Booking();
         $this->accommodations = new Accommodations();
 
     }
 
-public function addBooking() {
+public function addBooking() { # Método para agregar una reserva
     $userId = $_POST['user_id'];
     $accommodationId = $_POST['accommodation_id'];
 
     if ($this->booking->addBooking($userId, $accommodationId)) {
-        // Cambiar el estado del alojamiento a inactivo
+        # Cambia el estado del alojamiento a reservado
         if (!$this->accommodations->setStatus($accommodationId, 0)) {
             echo "Error al cambiar el estado del alojamiento.";
         }
 
-        // Redirigir a una página de éxito o al dashboard
+        # Redirige al dashboard
         header("Location: /CRUD%20Alojamientos/public/dashboard");
         exit();
     } else {
@@ -33,7 +39,7 @@ public function addBooking() {
     }
 }
 
-public function unsetBooking() {
+public function unsetBooking() {# Método para eliminar una reserva
     $userId = $_POST['user_id'] ?? null;
     $accommodationId = $_POST['accommodation_id'] ?? null;
 
@@ -42,9 +48,9 @@ public function unsetBooking() {
         return;
     }
 
-    // Elimina la reserva de la base de datos
-    if ($this->booking->removeBookingByUserAndAccommodation($userId, $accommodationId)) {
-        // Cambia el estado del alojamiento a activo
+    ##Eimina la reserva de la base de datos
+    if ($this->booking->deleteBooking($userId, $accommodationId)) {
+       # Cambia el estado del alojamiento a disponible
         if ($this->accommodations->setStatus($accommodationId, 1)) {
             header("Location: /CRUD%20Alojamientos/public/dashboard");
             exit();

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * DashboardController
+ * 
+ * Controlador para manejar el dashboard de la aplicación.
+ */
+
 namespace App\Controllers;
 
 use App\Models\Dashboard;
@@ -8,15 +14,15 @@ use Exception;
 
 class DashboardController
 {
-    private $userModel; // Propiedad para almacenar la instancia de User
-    private $dashboardModel; // Propiedad para almacenar la instancia de Dashboard
+    private $userModel; # Propiedad para almacenar la instancia de User
+    private $dashboardModel; # Propiedad para almacenar la instancia de Dashboard
 
     public function __construct() {
-        $this->userModel = new User(); // Inicializa la instancia de User
-        $this->dashboardModel = new Dashboard(); // Inicializa la instancia de Dashboard
+        $this->userModel = new User(); # Inicializa la instancia de User
+        $this->dashboardModel = new Dashboard(); # Inicializa la instancia de Dashboard
     }
 
-    public function showDashboard()
+    public function showDashboard()# Método para mostrar el dashboard
     {
         error_log("Iniciando showDashboard");
         
@@ -34,7 +40,7 @@ class DashboardController
                 throw new Exception("Usuario no encontrado");
             }
     
-            // Incluir la vista
+            #Incluir la vista
             require_once '../App/Views/Dashboard.php';
             
         } catch (Exception $e) {
@@ -43,21 +49,21 @@ class DashboardController
         }
     }
 
-    public function hasbooked($id)
-    {
-        // Usa la instancia de User desde el constructor
-        $bookings = $this->userModel->hasbooked($id);
-        return $bookings;
-    }
+    // public function hasbooked($id)
+    // {
+    //     // Usa la instancia de User desde el constructor
+    //     $bookings = $this->userModel->hasbooked($id);
+    //     return $bookings;
+    // }
 
-    public function getAccommodations()
+    public function getAccommodations()# Método para obtener los alojamientos
     {
         // Usa la instancia de Dashboard desde el constructor
         $accommodations = $this->dashboardModel->getAccommodations();
         return $accommodations;
     }
 
-    public function availableAccommodations()
+    public function availableAccommodations()# Método para obtener los alojamientos disponibles
     {
         // Usa la instancia de Dashboard desde el constructor
         $accommodations = $this->dashboardModel->availableAccommodations();

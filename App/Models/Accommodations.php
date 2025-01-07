@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Accommodations
+ * 
+ * Modelo para manejar los alojamientos.
+ */
 namespace App\Models;
 
 use Config\Database;
@@ -15,7 +19,7 @@ class Accommodations
         $this->conn = Database::getConnection();
     }
 
-    public function createAccommodation(string $name, string $description, float $price, int $capacity, bool $active): int
+    public function createAccommodation(string $name, string $description, float $price, int $capacity, bool $active) #metodo para agregar alojamiento
     {
         try {
             $query = "INSERT INTO accommodations (name, description, price, capacity, active) VALUES (:name, :description, :price, :capacity, :active)";
@@ -33,7 +37,7 @@ class Accommodations
         }
     }
 
-    public function setStatus(int $id, bool $status): bool
+    public function setStatus(int $id, bool $status)#metodo para cambiar el estado del alojamiento
     {
         try {
             $query = "UPDATE accommodations SET active = :status WHERE id = :id";
@@ -41,7 +45,7 @@ class Accommodations
             $stmt->bindParam(':status', $status, PDO::PARAM_BOOL);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
-            return $stmt->rowCount() > 0; // Devuelve true si se actualizó al menos una fila
+            return $stmt->rowCount() > 0; # Devuelve true si se actualizó al menos una fila
         } catch (Exception $e) {
             // Manejo de errores
             throw new Exception("Error al cambiar el estado del alojamiento: " . $e->getMessage());
