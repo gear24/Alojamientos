@@ -2,12 +2,20 @@
 
 namespace App\Controllers;
 
+use App\Models\Dashboard;
 use App\Models\User;
 use Exception;
 
-
 class DashboardController
 {
+    private $userModel; // Propiedad para almacenar la instancia de User
+    private $dashboardModel; // Propiedad para almacenar la instancia de Dashboard
+
+    public function __construct() {
+        $this->userModel = new User(); // Inicializa la instancia de User
+        $this->dashboardModel = new Dashboard(); // Inicializa la instancia de Dashboard
+    }
+
     public function showDashboard()
     {
         error_log("Iniciando showDashboard");
@@ -19,8 +27,7 @@ class DashboardController
         }
     
         try {
-            $userModel = new User();
-            $user = $userModel->findById($_SESSION['user_id']);
+            $user = $this->userModel->findById($_SESSION['user_id']);
             error_log("Datos de usuario: " . print_r($user, true));
     
             if (!$user) {
@@ -34,5 +41,26 @@ class DashboardController
             error_log("Error en dashboard: " . $e->getMessage());
             echo "Error: " . $e->getMessage();
         }
+    }
+
+    public function hasbooked($id)
+    {
+        // Usa la instancia de User desde el constructor
+        $bookings = $this->userModel->hasbooked($id);
+        return $bookings;
+    }
+
+    public function getAccommodations()
+    {
+        // Usa la instancia de Dashboard desde el constructor
+        $accommodations = $this->dashboardModel->getAccommodations();
+        return $accommodations;
+    }
+
+    public function availableAccommodations()
+    {
+        // Usa la instancia de Dashboard desde el constructor
+        $accommodations = $this->dashboardModel->availableAccommodations();
+        return $accommodations;
     }
 }

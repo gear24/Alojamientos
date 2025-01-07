@@ -14,6 +14,8 @@ session_start();
 # Rutas y controladores
 use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
+use App\Controllers\AccommodationsController;
+use App\Controllers\BookingController; 
 
 # Obtener la URI de la solicitud
 $requestUri = $_SERVER['REQUEST_URI'];
@@ -41,9 +43,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $authController = new AuthController();
             $authController->login();
             break;
+        case '/addAccommodation':
+            error_log("Add route matched"); // Debug log
+            $accommodationscontroller = new AccommodationsController();
+            $accommodationscontroller->addAccommodation();
+            break;
+        case '/addBooking': 
+                error_log("Add Booking route matched"); // Debug log
+                $bookingController = new BookingController();
+                $bookingController->addBooking();
+                break;
+        case '/unsetBooking': 
+                error_log("Add Booking route matched"); // Debug log
+                $bookingController = new BookingController();
+                $bookingController->unsetBooking();
+                break;
         default:
             error_log("No route matched for: " . $requestUri); // Debug log
-            echo "Ruta POST no encontrada";
+            echo "Ruta POST no encontrada \n";
+            echo $requestUri;
             break;
     }
 } else {
@@ -64,9 +82,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $authController = new AuthController();
                 $authController->logout();
                 break;
-            
+        case '/addAccommodation':
+                error_log("Add route matched"); // Debug log
+                $accommodationscontroller = new AccommodationsController();
+                $accommodationscontroller->showAccommodationForm();
+                break;
+
         default:
             echo "Ruta GET no encontrada: " . htmlspecialchars($requestUri);
             break;
     }
 }   
+
+
+
+
+

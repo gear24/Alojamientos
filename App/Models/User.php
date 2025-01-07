@@ -50,4 +50,17 @@ class User
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         return $user['role'] === 'admin';
     }
+
+    public function hasbooked($id)
+    {
+        $query = "
+            SELECT b.id AS booking_id, a.name AS accommodation_name 
+            FROM bookings b
+            JOIN accommodations a ON b.accommodation_id = a.id
+            WHERE b.user_id = :id
+        ";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

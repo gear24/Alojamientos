@@ -1,19 +1,23 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Models\Dashboard;
 use Exception;
 
 class AuthController
 {
-    public function showRegisterForm()
-    {
+    private $user; // Propiedad para almacenar la instancia de User
+
+    public function __construct() {
+        $this->user = new User(); // Inicializa la instancia de User
+    }
+
+    public function showRegisterForm() {
         require_once '../app/Views/auth/Register.php';
     }
 
-    public function register()
-    {
+    public function register() {
         try {
             session_start(); 
             
@@ -25,22 +29,18 @@ class AuthController
                 throw new Exception("Todos los campos son obligatorios.");
             }
     
-            
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
     
-            
-            $user = new User();
-            $user->create($name, $email, $hashedPassword);
+            // Usa la instancia de User desde el constructor
+            $this->user->create($name, $email, $hashedPassword);
     
-            
-            $foundUser = $user->findByEmail($email); 
+            $foundUser = $this->user->findByEmail($email); 
             if (!$foundUser) {
                 throw new Exception("Error al encontrar el usuario después de crear.");
             }
                 
             $_SESSION['user_id'] = $foundUser['id'];
             $_SESSION['user_name'] = $foundUser['name'];
-    
     
             header("Location: /CRUD%20Alojamientos/public/dashboard");
             exit();
@@ -49,16 +49,12 @@ class AuthController
             echo "Error: " . $e->getMessage();
         }
     }
-    
-    
 
-    public function showLoginForm()
-    {
+    public function showLoginForm() {
         require_once '../app/Views/auth/Login.php';
     }
 
-    public function login()
-    {
+    public function login() {
         try {
             error_log("Método login iniciado");
             
@@ -71,8 +67,8 @@ class AuthController
                 throw new Exception("Todos los campos son obligatorios.");
             }
     
-            $user = new User();
-            $foundUser = $user->findByEmail($email);
+            // Usa la instancia de User desde el constructor
+            $foundUser = $this->user->findByEmail($email);
             
             error_log("Usuario encontrado: " . print_r($foundUser, true));
     
@@ -93,9 +89,8 @@ class AuthController
             echo "Error: " . $e->getMessage();
         }
     }
-    
-    public function logout()
-    {
+
+    public function logout() {
         session_start();
         session_destroy();
         echo "Sesión cerrada.";
