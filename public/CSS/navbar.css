@@ -1,0 +1,16 @@
+.blinking-text {
+    animation: blink 0.5s infinite;
+}
+
+.hover-blue:hover {
+    color: #0D6EFD !important;
+}
+.hover-red:hover {
+    color: red !important;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}

@@ -31,8 +31,8 @@ public function addBooking() { # Método para agregar una reserva
             echo "Error al cambiar el estado del alojamiento.";
         }
 
-        # Redirige al dashboard
-        header("Location: /CRUD%20Alojamientos/public/dashboard");
+        # Redirige al dashboard2
+        header("Location: dashboard2");
         exit();
     } else {
         echo "Error al agregar la reserva.";
@@ -52,7 +52,7 @@ public function unsetBooking() {# Método para eliminar una reserva
     if ($this->booking->deleteBooking($userId, $accommodationId)) {
        # Cambia el estado del alojamiento a disponible
         if ($this->accommodations->setStatus($accommodationId, 1)) {
-            header("Location: /CRUD%20Alojamientos/public/dashboard");
+            header("Location: dashboard2?view=reservations");
             exit();
         } else {
             echo "Error al cambiar el estado del alojamiento.";

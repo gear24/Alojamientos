@@ -45,7 +45,7 @@ class AuthController
             $_SESSION['user_id'] = $foundUser['id'];
             $_SESSION['user_name'] = $foundUser['name'];
     
-            header("Location: /CRUD%20Alojamientos/public/dashboard");
+            header("Location: dashboard2");
             exit();
     
         } catch (Exception $e) {
@@ -84,7 +84,7 @@ class AuthController
             
             error_log("Sesión iniciada para usuario ID: " . $_SESSION['user_id']);
             
-            header("Location: /CRUD%20Alojamientos/public/dashboard");
+            header("Location: dashboard2");
             exit();
     
         } catch (Exception $e) {
@@ -97,7 +97,8 @@ class AuthController
         session_start();
         session_destroy();
         echo "Sesión cerrada.";
-        header("Location: /CRUD%20Alojamientos/public/login");
+        header("Location: /queso/public");
+        #header("Location: /login");
         exit();
     }
 }
